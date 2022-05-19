@@ -1,9 +1,28 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import React, { useEffect, useState } from "react";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+
+const dayOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 const Home: NextPage = () => {
+  const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDate(new Date());
+    }, 100);
+    return () => clearInterval(id);
+  }, [date]);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,12 +33,17 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          {("00" + date.getHours()).slice(-2)} :{" "}
+          {("00" + date.getMinutes()).slice(-2)} :{" "}
+          {("00" + date.getSeconds()).slice(-2)}
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
+          {("0000" + date.getFullYear()).slice(-4)} /{" "}
+          {("00" + (date.getMonth() + 1)).slice(-2)} /{" "}
+          {("00" + date.getDate()).slice(-2)}
+          <br></br>
+          {dayOfWeek[date.getDay()]}
         </p>
 
         <div className={styles.grid}>
@@ -59,14 +83,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
